@@ -9,9 +9,10 @@ import SwiftUI
 
 struct LabeledTextField: View {
     
-    @Binding var amount: String
+//    @Binding var amount: String
     
-    let viewModel: ViewModel
+    @ObservedObject var viewModel: ViewModel
+    let isBaseCurrency: Bool
 //    let numberFormatter: NumberFormatter
     let title: String
 //    let currency: CurrencyChoice
@@ -19,7 +20,8 @@ struct LabeledTextField: View {
     var body: some View {
         VStack(alignment: .leading){
             Text(title)
-            TextField("", value: $amount, formatter: viewModel.numberFormatter)
+            TextField("", value: isBaseCurrency ? $viewModel.baseAmount : $viewModel.convertedAmount, formatter: viewModel.numberFormatter)
+                .keyboardType(.numberPad)
                 .padding()
                 .overlay {
                     RoundedRectangle(cornerRadius: 5)
@@ -28,8 +30,8 @@ struct LabeledTextField: View {
                 }
                 .overlay(alignment: .trailing) {
                     HStack{
-                        title == "Amount" ? viewModel.baseCuurency.image() : viewModel.convertedCurrency.image()
-//                        currency.image()
+                        (isBaseCurrency ? viewModel.baseCuurency.image() :
+                            viewModel.convertedCurrency.image())
                             .resizable()
                             .scaledToFill()
                             .frame(width: 30,height: 30)
@@ -37,14 +39,18 @@ struct LabeledTextField: View {
                         Menu{
                             ForEach(CurrencyChoice.allCases){currency in
                                 Button {
-                                    
+                                    if(isBaseCurrency){
+                                        viewModel.baseCuurency = currency
+                                    }else{
+                                        viewModel.convertedCurrency = currency
+                                    }
                                 } label: {
-                                    Text(currency.rawValue)
+                                    Text(currency.fetchMenuName())
                                 }
 
                             }
                         }label: {
-                            Text(title == "Amount" ? viewModel.baseCuurency.rawValue : viewModel.convertedCurrency.rawValue)
+                            Text(isBaseCurrency ? viewModel.baseCuurency.rawValue : viewModel.convertedCurrency.rawValue)
                                 .fontWeight(.bold)
                                 .foregroundStyle(.black)
                         }
@@ -59,5 +65,5 @@ struct LabeledTextField: View {
 }
 
 #Preview {
-    LabeledTextField(amount: .constant(""),viewModel: ViewModel(), title: "Title")
+    LabeledTextField(viewModel: ViewModel(), isBaseCurrency: true,title: "Title")
 }

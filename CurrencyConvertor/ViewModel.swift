@@ -9,8 +9,8 @@ import Foundation
 
 class ViewModel: ObservableObject{
     
-    @Published var convertedAmount = "1.0"
-    @Published var baseAmount = "1.0"
+    @Published var convertedAmount: Double = 1.0
+    @Published var baseAmount: Double = 1.0
     @Published var baseCuurency: CurrencyChoice = .Egyptian
     @Published var convertedCurrency: CurrencyChoice = .Usa
     
@@ -18,7 +18,18 @@ class ViewModel: ObservableObject{
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.currencySymbol = ""
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 6 
         return formatter
+    }
+    
+    func reverseConversion(){
+        let temp = self.baseAmount
+        let temp2 = self.baseCuurency
+        self.baseAmount = self.convertedAmount
+        self.baseCuurency = self.convertedCurrency
+        self.convertedCurrency = temp2
+        self.convertedAmount = temp
     }
     
 }

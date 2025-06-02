@@ -12,11 +12,11 @@ struct ContentView: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            LabeledTextField(amount: $viewModel.baseAmount,viewModel: viewModel, numberFormatter: viewModel.numberFormatter , title: "Amount",currency: viewModel.baseCuurency)
+            LabeledTextField(viewModel: viewModel,isBaseCurrency: true ,title: "Amount")
             HStack{
                 Spacer()
                 Button {
-                    
+                    viewModel.reverseConversion()
                 } label: {
                     Image(systemName: "arrow.up.arrow.down")
                         .foregroundStyle(.black)
@@ -26,7 +26,7 @@ struct ContentView: View {
                 Spacer()
             }
             .padding(.vertical)
-            LabeledTextField(amount: $viewModel.convertedAmount,viewModel: viewModel,numberFormatter: viewModel.numberFormatter ,title: "Converted To",currency: viewModel.convertedCurrency)
+            LabeledTextField(viewModel: viewModel, isBaseCurrency: false,title: "Converted To")
             HStack{
                 Spacer()
                 Text("1.0000 USD = 2.0000")
