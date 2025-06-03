@@ -32,6 +32,14 @@ class ViewModel: ObservableObject{
         rates = await ApiService.fetchExchangeRate()
     }
     
+    func convert(){
+        if let rates = rates,
+           let baseExchangeRate = rates.rates[baseCuurency.rawValue],
+           let convertedExchangeRate = rates.rates[convertedCurrency.rawValue]{
+            convertedAmount = (convertedExchangeRate / baseExchangeRate) * baseAmount
+        }
+    }
+    
     func reverseConversion(){
         let temp = self.baseAmount
         let temp2 = self.baseCuurency
@@ -40,5 +48,7 @@ class ViewModel: ObservableObject{
         self.convertedCurrency = temp2
         self.convertedAmount = temp
     }
+    
+    
     
 }

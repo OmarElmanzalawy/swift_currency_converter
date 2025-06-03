@@ -35,10 +35,7 @@ final class ApiService{
             print(error.localizedDescription)
             return nil
         }
-        
-        
     }
-    
 }
 
 

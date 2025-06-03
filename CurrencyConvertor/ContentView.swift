@@ -41,6 +41,17 @@ struct ContentView: View {
                         .font(.system(size: 18,weight: .semibold))
                         .padding(.top, 25)
                     Spacer()
+                }.padding(.bottom,25)
+               
+                Button {
+                    viewModel.convert()
+                }label:{
+                    Text("Convert")
+                        .frame(maxWidth: .infinity,minHeight: 45,alignment: .center)
+                        .foregroundStyle(.white)
+                        .font(.system(size: 17,weight: .semibold))
+                        .background(Color.blue)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
             }
             .padding()
