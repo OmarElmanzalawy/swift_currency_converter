@@ -9,10 +9,15 @@ import Foundation
 
 class ViewModel: ObservableObject{
     
+    static let shared = ViewModel()
+    
     @Published var convertedAmount: Double = 1.0
     @Published var baseAmount: Double = 1.0
     @Published var baseCuurency: CurrencyChoice = .Egyptian
     @Published var convertedCurrency: CurrencyChoice = .Usa
+    @Published var rates: Rates?
+    @Published var isLoading: Bool = true
+    @Published var erroMessage: String = ""
     
     var numberFormatter: NumberFormatter{
         let formatter = NumberFormatter()
@@ -21,6 +26,10 @@ class ViewModel: ObservableObject{
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = 6 
         return formatter
+    }
+    
+    func fetchRates()async{
+        rates = await ApiService.fetchExchangeRate()
     }
     
     func reverseConversion(){
