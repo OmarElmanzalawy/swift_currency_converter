@@ -12,10 +12,10 @@ struct LabeledTextField: View {
 //    @Binding var amount: String
     
     @ObservedObject var viewModel: ViewModel
+    @FocusState.Binding var isFocused: Bool
     let isBaseCurrency: Bool
-//    let numberFormatter: NumberFormatter
     let title: String
-//    let currency: CurrencyChoice
+
     
     var body: some View {
         VStack(alignment: .leading){
@@ -23,6 +23,7 @@ struct LabeledTextField: View {
             TextField("", value: isBaseCurrency ? $viewModel.baseAmount : $viewModel.convertedAmount, formatter: viewModel.numberFormatter)
                 .keyboardType(.numberPad)
                 .padding()
+                .focused($isFocused)
                 .overlay {
                     RoundedRectangle(cornerRadius: 5)
                         .fill(.clear)
@@ -65,5 +66,6 @@ struct LabeledTextField: View {
 }
 
 #Preview {
-    LabeledTextField(viewModel: ViewModel(), isBaseCurrency: true,title: "Title")
+    @FocusState var isFocused: Bool
+    LabeledTextField(viewModel: ViewModel(), isFocused: $isFocused,isBaseCurrency: true,title: "Title")
 }

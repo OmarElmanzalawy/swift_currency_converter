@@ -10,6 +10,9 @@ struct ContentView: View {
     
     @StateObject private var viewModel = ViewModel.shared
     
+    @FocusState private var isBaseCurrencyFocused: Bool
+    @FocusState private var isConvertedCurrencyFocused: Bool
+    
     var body: some View {
         ZStack {
             VStack(alignment: .leading){
@@ -20,7 +23,7 @@ struct ContentView: View {
                         .font(.system(size: 18,weight: .semibold))
                     Spacer()
                 }
-                LabeledTextField(viewModel: viewModel,isBaseCurrency: true ,title: "Amount")
+                LabeledTextField(viewModel: viewModel,isFocused: $isBaseCurrencyFocused,isBaseCurrency: true ,title: "Amount")
                 HStack{
                     Spacer()
                     Button {
@@ -34,7 +37,7 @@ struct ContentView: View {
                     Spacer()
                 }
                 .padding(.vertical)
-                LabeledTextField(viewModel: viewModel, isBaseCurrency: false,title: "Converted To")
+                LabeledTextField(viewModel: viewModel, isFocused: $isConvertedCurrencyFocused,isBaseCurrency: false,title: "Converted To")
                 HStack{
                     Spacer()
                     Text("1.0000 USD = 2.0000")
@@ -42,9 +45,10 @@ struct ContentView: View {
                         .padding(.top, 25)
                     Spacer()
                 }.padding(.bottom,25)
-               
                 Button {
                     viewModel.convert()
+                    isBaseCurrencyFocused = false
+                    isConvertedCurrencyFocused = false
                 }label:{
                     Text("Convert")
                         .frame(maxWidth: .infinity,minHeight: 45,alignment: .center)
@@ -56,6 +60,7 @@ struct ContentView: View {
             }
             .padding()
             .task {
+                //temporarily disabled
                 await viewModel.fetchRates()
             }
             if viewModel.isLoading {
