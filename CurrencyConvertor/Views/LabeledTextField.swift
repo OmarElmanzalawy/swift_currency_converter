@@ -45,6 +45,7 @@ struct LabeledTextField: View {
                                     }else{
                                         viewModel.convertedCurrency = currency
                                     }
+                                    viewModel.convert()
                                 } label: {
                                     Text(currency.fetchMenuName())
                                 }

@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 class ViewModel: ObservableObject{
     
     static let shared = ViewModel()
@@ -26,6 +27,15 @@ class ViewModel: ObservableObject{
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = 6 
         return formatter
+    }
+    
+    var conversionRate: Double {
+        if let rates = rates,
+           let baseExchangeRate = rates.rates[baseCuurency.rawValue],
+           let convertedExchangeRate = rates.rates[convertedCurrency.rawValue] {
+            return convertedExchangeRate / baseExchangeRate
+        }
+        return 1
     }
     
     func fetchRates()async{

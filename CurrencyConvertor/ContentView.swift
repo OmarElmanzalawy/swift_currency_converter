@@ -40,7 +40,7 @@ struct ContentView: View {
                 LabeledTextField(viewModel: viewModel, isFocused: $isConvertedCurrencyFocused,isBaseCurrency: false,title: "Converted To")
                 HStack{
                     Spacer()
-                    Text("1.0000 USD = 2.0000")
+                    Text("1.0000 \(viewModel.baseCuurency.rawValue) = \(viewModel.conversionRate) \(viewModel.convertedCurrency.rawValue)")
                         .font(.system(size: 18,weight: .semibold))
                         .padding(.top, 25)
                     Spacer()
